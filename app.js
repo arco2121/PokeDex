@@ -62,6 +62,29 @@ app.get('/new-pokemon', (req, res) => {
   res.render('new-pokemon', {})
 });
 
+app.get("/pokemons/pokeweight", (req, res) => {
+  const q = "SELECT * FROM pokemon WHERE pok_weight > 200 order by"
+  db.query(q, (err, results) => {
+    res.render('index', { pokemons: results })
+  })
+})
+
+app.get("/pokemons/random", (req, res) => {
+  const q = "SELECT * FROM pokemon order by rand() limit 10"
+  db.query(q, (err, results) => {
+    res.render('index', { pokemons: results })
+  })
+})
+
+app.get("/pokemons/filterby/letter/:lettera", (req, res) => {
+  const lettera = req.params.lettera;
+  const q = "SELECT * FROM pokemon where pok_name like '"+ lettera + "%'"
+  db.query(q, (err, results) => {
+    res.render('index', { pokemons: results })
+  })
+})
+
+
 // Route: POST /new-pokemon
 app.post('/new-pokemon', (req, res) => {
 
@@ -160,7 +183,7 @@ app.post('/edit-pokemon/:pokemonId', (req, res) => {
     SET pok_name = ?, pok_height = ?, pok_weight = ?, pok_base_experience = ?
     WHERE pok_id = ?`;
 
-  // esecuzione della query sql INSERT
+
   db.query(sql, values, (err, result) => {
       if (err) {
         console.error('Errore nell\'inserimento:', err);
