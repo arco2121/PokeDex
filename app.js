@@ -63,7 +63,7 @@ app.get('/new-pokemon', (req, res) => {
 });
 
 app.get("/pokemons/pokeweight", (req, res) => {
-  const q = "SELECT * FROM pokemon WHERE pok_weight > 200 order by"
+  const q = "SELECT * FROM pokemon WHERE pok_weight > 200 order by pok_weight desc"
   db.query(q, (err, results) => {
     res.render('index', { pokemons: results })
   })
